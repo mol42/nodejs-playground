@@ -5,8 +5,11 @@
   "main": "main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "say-hello": "echo \"Hello from terminal\" && node say_hello.js" 
+    "say-hello": "echo \"Hello from terminal\" && node say_hello.js"
   },
   "author": "Tayfun YUGRUK",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "moment": "^2.27.0"
+  }
 }
