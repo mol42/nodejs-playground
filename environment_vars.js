@@ -1,1 +1,1 @@
-console.log(process.env.ENV_VAR_TEST);
+console.log(process.env.ENV_MY_NAME);
