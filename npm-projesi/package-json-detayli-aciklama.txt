@@ -1,3 +1,5 @@
+*** En sık kullanılan package.json alanları ve açıklamaları aşağıdadır. ****
+
 name : uygulama/proje/kütüphanenin adını verdiğimiz field
 version : uygulama/proje/kütüphanenin o anki sürüm numarasını belirttiğimiz alan
 description: uygulama/proje/kütüphanenin özet açıklaması
