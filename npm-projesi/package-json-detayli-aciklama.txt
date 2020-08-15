@@ -1,0 +1,12 @@
+name : uygulama/proje/kütüphanenin adını verdiğimiz field
+version : uygulama/proje/kütüphanenin o anki sürüm numarasını belirttiğimiz alan
+description: uygulama/proje/kütüphanenin özet açıklaması
+main: uygulama/proje/kütüphanenin ana çalıştırılan dosyasının adı/yolu
+private: Eğer true set edilirse npm üzerinde yayına alınmasını engelleriz.
+scripts: NodeJS ile çalıştırabileceğimiz scriptleri belirttiğimiz obje yapısıdır.
+dependencies: uygulama/proje/kütüphanenin bağımlılıklarını belirttiğimiz listedir.
+            Bu liste içinde uygulamanın çalışırken kullandığı bağımlılıklar belirtilmelidir.
+            Development ortamında kullanılan bağımlılıklar için devDependencies kullanılıyor.
+devDependencies: uygulama/proje/kütüphanenin development ortamındaki bağımlılıklarını belirttiğimiz listedir.
+engines: uygulama/proje/kütüphanenin hangi NodeJS sürümü ile çalışabileceğini belirttiğimiz alandır.
+browserslist: uygulama/proje/kütüphanenin hangi web tarayıcısı sürümlerinde çalışabileceğini belirttiğimiz alandır.
