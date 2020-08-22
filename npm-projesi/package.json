@@ -12,5 +12,8 @@
   "dependencies": {
     "moment": "^2.27.0",
     "xml2js": "^0.2.7"
+  },
+  "devDependencies": {
+    "webpack": "^4.44.1"
   }
 }

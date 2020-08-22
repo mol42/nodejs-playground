@@ -1,0 +1,27 @@
+assert	        Testlerde kullanılan fonksiyonlar, doğruluk/yanlışlık gibi yardımcı metodlar sağlıyor
+buffer	        Binary data yönetmek için kullanıyoruz
+child_process	Child uygulama (process) yaratmak için kullanıyoruz.
+cluster	        Node uygulamasını birden fazla uygulamaya bölmeye yarayan metodlar sağlıyor
+crypto	        OpenSSL kripto işlemleri için metodları sağlıyor
+dgram	        UDP datagram soketlerini yönetmek için yardımcılar sağlıyor
+dns	            DNS çözümlemeleri ve domain name çözümlemelerine yardımcı metodlar sağlıyor
+events	        Node uygulaması içerinde event yapısı yönetmemizi sağlıyor
+fs	            Dosya işlemlerine yardımcı metodlar sağlıyor
+http	        To make Node.js act as an HTTP server
+https	        To make Node.js act as an HTTPS server.
+net	            To create servers and clients
+os	            Provides information about the operation system
+path	        To handle file paths
+punycode	    Deprecated. A character encoding scheme
+querystring	    To handle URL query strings
+readline	    To handle readable streams one line at the time
+stream	        To handle streaming data
+string_decoder	To decode buffer objects into strings
+timers	        To execute a function after a given number of milliseconds
+tls	            To implement TLS and SSL protocols
+tty	            Provides classes used by a text terminal
+url	            To parse URL strings
+util	        To access utility functions
+v8	            To access information about V8 (the JavaScript engine)
+vm	            To compile JavaScript code in a virtual machine
+zlib	        To compress or decompress files
