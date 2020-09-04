@@ -1,0 +1,25 @@
+------ HOW TO INITIALIZE AND RUN THE PROJECT -----
+
+* checkout project
+
+* update config/config.json and .env password sections with the password of your mysql root user.
+
+* create db with the script : 
+  CREATE DATABASE `newsfeed_db` /*!40100 DEFAULT CHARACTER SET utf8 */ /*!80016 DEFAULT ENCRYPTION='N' */;
+
+* npx sequelize-cli db:migrate 
+    -> this will create db and tables
+
+* npx sequelize-cli db:seed:all 
+    -> this will insert demo data into tables
+
+* node app.js
+
+
+---- SEQUELIZE HELPER COMMANDS -----
+
+* npx sequelize-cli model:generate --name NewsEntryModel --attributes tmpAttribute:string 
+    -> this will create a model that is compatible with migration library
+
+* npx sequelize-cli seed:generate --name demo-news-entry
+    -> this will create a JS script file which inserts data into the db
