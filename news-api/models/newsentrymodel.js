@@ -30,8 +30,9 @@ module.exports = (sequelize, DataTypes) => {
     },
     {
       sequelize,
+      modelName: "NewsEntryModel",
       // tablo adı buraya !
-      modelName: "news_entries",
+      tableName: "news_entries",
     }
   );
   return NewsEntryModel;

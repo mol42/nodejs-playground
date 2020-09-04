@@ -33,10 +33,6 @@ app.use(function (err, req, res, next) {
 const port = 3000;
 app.set("port", port);
 
-/**
- * Create HTTP server.
- */
-
 const server = http.createServer(app);
 
 function onError(error) {
@@ -64,7 +60,7 @@ function onError(error) {
 const DbOptions = {
   MYSQL_DATABASE: "newsfeed_db",
   MYSQL_USER: "root",
-  MYSQL_PASS: "YOUR_PASSWORD_HERE",
+  MYSQL_PASS: "YOUR_MYSQL_ROOT_PASSWORD",
   MYSQL_HOST: "localhost",
 };
 
