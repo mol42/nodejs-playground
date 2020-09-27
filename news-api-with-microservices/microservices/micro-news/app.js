@@ -13,7 +13,7 @@ const DBManager = require("./db/DBManager");
 const DbOptions = {
   MYSQL_DATABASE: "newsfeed_db",
   MYSQL_USER: "root",
-  MYSQL_PASS: "YOUR_MYSQL_PASSWORD_HERE",
+  MYSQL_PASS: "r00t_1234G",
   MYSQL_HOST: "localhost"
 };
 
@@ -25,6 +25,7 @@ const sequelizeInstance = new SequelizeFactory().init(
 );
 DBManager.setModelCache(new ModelCacheFactory().init(sequelizeInstance, Sequelize));
 //
+
 function getFormattedDateOf7DaysBefore() {
   const nowMoment = moment();
   return nowMoment.subtract(7, "days").format("YYYYMMDD");
@@ -57,6 +58,15 @@ const news_fetchLast7Days = async function () {
     return JSON.stringify({ error: "error" });
   }
 };
+
+const news_updateNews = async function (data, sessionUser) {
+  try {
+    console.log("sessionUser", sessionUser);
+    return JSON.stringify({ result: "ok" });
+  } catch (err) {
+    return JSON.stringify({ error: "ERROR_99999" });
+  }
+};
 /*
  **********************************************************************
  */
@@ -81,12 +91,14 @@ amqp.connect(`amqp://localhost?heartbeat=10`, function (error0, connection) {
       console.log("incoming command", commandDataJSON);
       const commandData = JSON.parse(commandDataJSON);
       const responseAsJSONString = { data: null };
-      const { command, data } = commandData;
+      const { command, data, sessionUser } = commandData;
       //------
       if (command === "FETCH_ALL_NEWS_ENTRIES") {
         responseAsJSONString.data = await news_fetchAllNewsEntries(data);
       } else if (command === "FETCH_LAST_7_DAYS") {
         responseAsJSONString.data = await news_fetchLast7Days(data);
+      } else if (command === "UPDATE_NEWS") {
+        responseAsJSONString.data = await news_updateNews(data, sessionUser);
       }
       //------
       if (responseAsJSONString.data !== null) {
@@ -94,6 +106,8 @@ amqp.connect(`amqp://localhost?heartbeat=10`, function (error0, connection) {
           correlationId: msg.properties.correlationId
         });
 
+        channel.ack(msg);
+      } else {
         channel.ack(msg);
       }
     });

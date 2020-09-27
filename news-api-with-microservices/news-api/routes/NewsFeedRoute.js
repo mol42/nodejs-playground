@@ -12,4 +12,8 @@ router.get("/last7days", function (req, res, next) {
   NewsFeedController.fetchLast7Days(req, res);
 });
 
+router.post("/update", function (req, res, next) {
+  NewsFeedController.updateNews(req, res);
+});
+
 module.exports = router;

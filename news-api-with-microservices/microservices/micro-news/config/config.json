@@ -1,7 +1,7 @@
 {
     "development": {
       "username": "root",
-      "password": "YOUR_MYSQL_PASSWORD_HERE",
+      "password": "r00t_1234G",
       "database": "newsfeed_db",
       "host": "127.0.0.1",
       "dialect": "mysql"
