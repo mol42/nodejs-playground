@@ -39,7 +39,8 @@ NewsFeedController.updateNews = async function (req, res) {
   try {
     sessionUser = jwt.verify(jwtToken, jwtKey);
   } catch (e) {
-    console.log(e);
+    // Eger JWT token oynanmis ise verilen key ile cozumlenemez
+    // ve hata aldigimiz noktada hatayi kontrol ederek uygun aksiyonu aliriz
     if (e instanceof jwt.JsonWebTokenError) {
       resultAsJsonString = JSON.stringify({ error: "ERROR_401" });
     }
