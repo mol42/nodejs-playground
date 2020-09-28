@@ -6,4 +6,12 @@ router.post("/login", function (req, res, next) {
   AuthController.doLogin(req, res);
 });
 
+router.post("/refresh", function (req, res, next) {
+  AuthController.doRefresh(req, res);
+});
+
+router.post("/refresh/custom-token", function (req, res, next) {
+  AuthController.doRefreshWithCustomRefreshToken(req, res);
+});
+
 module.exports = router;
