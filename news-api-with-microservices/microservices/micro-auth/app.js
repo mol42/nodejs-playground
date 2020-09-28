@@ -3,14 +3,17 @@ require("dotenv").config();
 
 const amqp = require("amqplib/callback_api");
 const jwt = require("jsonwebtoken");
+const randtoken = require("rand-token");
 
 const jwtKey = "code42_secret_key";
-const jwtExpirySeconds = 300;
+const jwtExpirySeconds = 90;
 
 const users = {
   user1: "pass1",
   user2: "pass2"
 };
+
+const customRefreshTokens = {};
 
 const auth_doLogin = async function (data) {
   try {
@@ -40,16 +43,82 @@ const auth_doLogin = async function (data) {
     });
 
     console.log("token:", jwtToken);
+    // custom urettigimiz refresh tokeni in-memory bir objeye sakliyoruz bu ornekte
+    // siz redis, mysql vb uygun bir yerde saklayabilirsiniz.
+    const refreshToken = randtoken.uid(256);
+    customRefreshTokens[refreshToken] = username;
 
     return JSON.stringify({
-      jwtToken
+      jwtToken,
+      refreshToken
     });
   } catch (err) {
     console.log(err);
-    return JSON.stringify({ error: "error" });
+    return JSON.stringify({ error: "ERROR_99999" });
   }
 };
 
+// Bu endpoint login sirasinda uretilen jwtToken yardimi ile refresh token
+// islemi yapmaktadir. Alternatif yontem custom urettigimiz refresh tokendir
+// ve ornegi asagidadir.
+//
+// her request sonucunda token refresh etmek ya da expirySecond
+// bitmeden uygulamanizda arka planda refresh cagrisi yapmak iyi
+// bir fikirdir.
+const auth_refresh = async function (data) {
+  const { jwtToken } = data;
+
+  if (!jwtToken) {
+    return JSON.stringify({ error: "ERROR_401" });
+  }
+
+  let payload;
+  try {
+    payload = jwt.verify(jwtToken, jwtKey);
+  } catch (e) {
+    if (e instanceof jwt.JsonWebTokenError) {
+      return JSON.stringify({ error: "ERROR_401" });
+    }
+    return JSON.stringify({ error: "ERROR_400" });
+  }
+  try {
+    // login sirasindaki uretilen token ile ayni mantik ile token uretiyoruz
+    // tek farki su anda urettigimiz icin jwtExpirySeconds ile birlestiginde
+    // jwtExpirySeconds kadar sure valid olacak bu token yani bir nevi
+    // token'in suresini uzatmis olduk yeni baska bir token ile.
+    const newToken = jwt.sign({ username: payload.username }, jwtKey, {
+      algorithm: "HS256",
+      expiresIn: jwtExpirySeconds
+    });
+
+    return JSON.stringify({
+      jwtToken: newToken
+    });
+  } catch (err) {
+    return JSON.stringify({ error: "ERROR_99999" });
+  }
+};
+
+// Bu endpoint login sirasinda random bir generator ile urettigimiz refresh token yardimi ile
+// token refresh islemidir, custom token bilgisini server tarafinda redis/mysql vb
+// bir ortamda saklayabiliriz
+const auth_refreshWithCustomRefreshToken = async function (data) {
+  const { username, customRefreshToken } = data;
+
+  if (customRefreshToken in customRefreshTokens && customRefreshTokens[customRefreshToken] === username) {
+    const newToken = jwt.sign({ username }, jwtKey, {
+      algorithm: "HS256",
+      expiresIn: jwtExpirySeconds
+    });
+    // Bu noktada yeni bir refresh token uretip donebilirsiniz daha da guvenli bir yapi olusmasi
+    // adina..
+    return JSON.stringify({
+      jwtToken: newToken
+    });
+  } else {
+    return JSON.stringify({ error: "ERROR_401" });
+  }
+};
 /*
  **********************************************************************
  */
@@ -79,6 +148,10 @@ amqp.connect(`amqp://localhost?heartbeat=10`, function (error0, connection) {
       //------
       if (command === "DO_LOGIN") {
         responseAsJSONString.data = await auth_doLogin(data);
+      } else if (command === "DO_REFRESH") {
+        responseAsJSONString.data = await auth_refresh(data);
+      } else if (command === "DO_REFRESH_WITH_CUSTOM_TOKEN") {
+        responseAsJSONString.data = await auth_refreshWithCustomRefreshToken(data);
       }
       //------
       if (responseAsJSONString.data !== null) {
